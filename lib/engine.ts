@@ -17,7 +17,6 @@ export class EngineError extends Error {
 
 function pickPrompt(room: Room): string {
   const pack = PROMPT_PACKS[room.settings.promptPack];
-  const usedPrompts = room.memories.map((m) => m.winningTwist);
   const roundIndex = (room.currentRound?.roundNumber ?? 1) - 1;
   return pack[roundIndex % pack.length];
 }
@@ -32,8 +31,15 @@ function initRound(room: Room, roundNumber: number): RoundState {
   };
 }
 
-export function dispatch(room: Room, action: Action): Room {
+export function dispatch(inputRoom: Room, action: Action): Room {
   const now = Date.now();
+  // Firebase RTDB drops empty arrays/objects — normalize
+  const room: Room = {
+    ...inputRoom,
+    memories: inputRoom.memories ?? [],
+    scores: inputRoom.scores ?? {},
+    players: inputRoom.players ?? {},
+  };
   const next = { ...room, updatedAt: now };
 
   switch (action.type) {
