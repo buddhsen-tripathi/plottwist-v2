@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No active round" }, { status: 400 });
     }
 
-    const submissions = Object.values(room.currentRound.submissions);
+    const submissions = Object.values(room.currentRound.submissions ?? {});
 
     // Process each submission sequentially
     let currentRoom = room;

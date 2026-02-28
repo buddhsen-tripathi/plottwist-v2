@@ -42,7 +42,11 @@ async function generateNarration(
       }
     );
 
-    if (!res.ok) throw new Error(`Gemini API error: ${res.status}`);
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error("[generateScene] Gemini narration error body:", errBody);
+      throw new Error(`Gemini API error: ${res.status}`);
+    }
     const data = await res.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     return text || getFallbackNarration();
@@ -78,7 +82,11 @@ async function generateImage(
       }
     );
 
-    if (!res.ok) throw new Error(`Image generation error: ${res.status}`);
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error("[generateScene] Gemini image error body:", errBody);
+      throw new Error(`Image generation error: ${res.status}`);
+    }
     const data = await res.json();
     const parts = data.candidates?.[0]?.content?.parts;
     const imagePart = parts?.find((p: { inlineData?: unknown }) => p.inlineData);

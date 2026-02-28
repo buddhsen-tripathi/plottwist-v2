@@ -33,12 +33,20 @@ function initRound(room: Room, roundNumber: number): RoundState {
 
 export function dispatch(inputRoom: Room, action: Action): Room {
   const now = Date.now();
-  // Firebase RTDB drops empty arrays/objects — normalize
+  // Firebase RTDB drops empty arrays/objects — normalize all nullable fields
+  const normalizedRound = inputRoom.currentRound
+    ? {
+        ...inputRoom.currentRound,
+        submissions: inputRoom.currentRound.submissions ?? {},
+        votes: inputRoom.currentRound.votes ?? {},
+      }
+    : inputRoom.currentRound;
   const room: Room = {
     ...inputRoom,
     memories: inputRoom.memories ?? [],
     scores: inputRoom.scores ?? {},
     players: inputRoom.players ?? {},
+    currentRound: normalizedRound,
   };
   const next = { ...room, updatedAt: now };
 
