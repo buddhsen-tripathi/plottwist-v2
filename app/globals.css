@@ -1,1 +1,279 @@
 @import "tailwindcss";
+
+/* =========================
+   ROOT THEME TOKENS
+   Dark-first indie game: navy gradient + gold accents
+========================= */
+:root {
+  /* Navy palette */
+  --navy-deep: #1a1a2e;
+  --navy-mid: #16213e;
+  --navy-light: #0f3460;
+
+  /* Gold accent */
+  --gold: #ffd600;
+  --gold-dim: #bfa100;
+  --gold-glow: rgba(255, 214, 0, 0.35);
+
+  /* Semantic tokens */
+  --background: var(--navy-deep);
+  --foreground: #e8e8f0;
+  --foreground-muted: #8888a8;
+  --card: rgba(22, 33, 62, 0.6);
+  --card-foreground: #e8e8f0;
+  --border: rgba(255, 255, 255, 0.10);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: var(--gold);
+  --destructive: #ff4d6a;
+
+  --font-sans: "Nunito", sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --radius: 1.2rem;
+  --tracking-normal: -0.01em;
+
+  /* =========================
+     DARK GLASS TOKENS
+  ========================= */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+
+  --glass-blur: 24px;
+  --glass-blur-strong: 40px;
+  --glass-saturation: 1.8;
+
+  --glass-shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --glass-shadow-md: 0 10px 40px rgba(0, 0, 0, 0.40);
+  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55);
+
+  --glass-gradient: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.04)
+  );
+
+  /* Timer colors */
+  --timer-green: #4ade80;
+  --timer-yellow: #facc15;
+  --timer-red: #f87171;
+}
+
+/* =========================
+   TAILWIND THEME BINDINGS
+========================= */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-gold: var(--gold);
+  --color-gold-dim: var(--gold-dim);
+  --color-destructive: var(--destructive);
+
+  --color-glass: var(--glass-bg);
+  --color-glass-strong: var(--glass-bg-strong);
+  --color-glass-border: var(--glass-border);
+
+  --color-timer-green: var(--timer-green);
+  --color-timer-yellow: var(--timer-yellow);
+  --color-timer-red: var(--timer-red);
+
+  --blur-glass: var(--glass-blur);
+  --blur-glass-strong: var(--glass-blur-strong);
+  --saturate-glass: var(--glass-saturation);
+
+  --shadow-glass-sm: var(--glass-shadow-sm);
+  --shadow-glass-md: var(--glass-shadow-md);
+  --shadow-glass-lg: var(--glass-shadow-lg);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* =========================
+   BASE LAYER
+========================= */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-normal);
+    min-height: 100dvh;
+  }
+}
+
+/* =========================
+   ANIMATED GRADIENT BACKGROUND
+========================= */
+.bg-game {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 12s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* =========================
+   DARK GLASS COMPONENTS
+========================= */
+@layer components {
+
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+    border-radius: var(--radius);
+    position: relative;
+  }
+
+  .glass-elevated {
+    background: var(--glass-gradient);
+    backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-md);
+    border-radius: var(--radius-xl);
+    position: relative;
+  }
+
+  .glass-toolbar {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturation));
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-sm);
+  }
+
+  .glass-button {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: 1px solid var(--glass-border);
+    border-radius: calc(var(--radius) - 4px);
+    box-shadow: var(--glass-shadow-sm);
+    transition: all 200ms ease;
+    color: var(--foreground);
+  }
+
+  .glass-button:hover {
+    background: var(--glass-bg-strong);
+    border-color: var(--glass-highlight);
+  }
+
+  .glass-button:active {
+    transform: scale(0.97);
+    box-shadow: var(--glass-shadow-md);
+  }
+
+  /* Gold accent button */
+  .glass-button-gold {
+    background: linear-gradient(135deg, rgba(255, 214, 0, 0.20), rgba(255, 214, 0, 0.08));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    border: 1px solid rgba(255, 214, 0, 0.30);
+    border-radius: calc(var(--radius) - 4px);
+    box-shadow: 0 4px 20px rgba(255, 214, 0, 0.15);
+    transition: all 200ms ease;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .glass-button-gold:hover {
+    background: linear-gradient(135deg, rgba(255, 214, 0, 0.30), rgba(255, 214, 0, 0.14));
+    box-shadow: 0 6px 30px rgba(255, 214, 0, 0.25);
+    border-color: rgba(255, 214, 0, 0.50);
+  }
+
+  .glass-button-gold:active {
+    transform: scale(0.97);
+  }
+
+  /* Highlight sheen on glass panels */
+  .glass::before,
+  .glass-elevated::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      170deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 40%
+    );
+    pointer-events: none;
+  }
+
+  /* Gold glow effect */
+  .gold-glow {
+    text-shadow: 0 0 20px var(--gold-glow), 0 0 40px rgba(255, 214, 0, 0.15);
+  }
+
+  .gold-glow-box {
+    box-shadow: 0 0 30px var(--gold-glow), var(--glass-shadow-md);
+  }
+
+  /* Glass input */
+  .glass-input {
+    background: var(--input);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: calc(var(--radius) - 4px);
+    color: var(--foreground);
+    transition: all 200ms ease;
+  }
+
+  .glass-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.15);
+  }
+
+  .glass-input::placeholder {
+    color: var(--foreground-muted);
+  }
+}
+
+/* =========================
+   GAME-SPECIFIC UTILITIES
+========================= */
+@layer utilities {
+  .text-gold {
+    color: var(--gold);
+  }
+
+  .border-gold {
+    border-color: rgba(255, 214, 0, 0.30);
+  }
+}
+
+/* =========================
+   STAGE TRANSITION
+========================= */
+.stage-enter {
+  animation: stage-fade-in 0.4s ease-out;
+}
+
+@keyframes stage-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,7 +1,5 @@
+import { LandingView } from "@/components/LandingView";
+
 export default function Home() {
-  return (
-    <main>
-      <div>Hello world!</div>
-    </main>
-  );
+  return <LandingView />;
 }
