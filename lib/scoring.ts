@@ -90,6 +90,7 @@ export function calculateRoundScores(
     winnerAvatar: winnerPlayer?.avatar ?? "",
     narration: winnerSub?.narration ?? "",
     mediaUrl: winnerSub?.mediaUrl,
+    mediaType: winnerSub?.mediaType,
   };
 
   return { scores, winnerId, memory };

@@ -2,6 +2,7 @@
 
 import type { Room } from "@/types/game";
 import { Button } from "@/components/ui/Button";
+import { MediaDisplay } from "@/components/ui/MediaDisplay";
 
 interface RoundResultViewProps {
   room: Room;
@@ -10,8 +11,9 @@ interface RoundResultViewProps {
 
 export function RoundResultView({ room, playerId }: RoundResultViewProps) {
   const isHost = room.hostId === playerId;
-  const scores = Object.values(room.scores).sort((a, b) => b.totalScore - a.totalScore);
+  const scores = Object.values(room.scores ?? {}).sort((a, b) => b.totalScore - a.totalScore);
   const roundNumber = room.currentRound?.roundNumber ?? 1;
+  const memories = room.memories ?? [];
   const winnerId = room.currentRound?.winnerId;
 
   const handleNext = async () => {
@@ -79,25 +81,30 @@ export function RoundResultView({ room, playerId }: RoundResultViewProps) {
         </div>
 
         {/* Memory Chain */}
-        {room.memories.length > 0 && (
+        {memories.length > 0 && (
           <div className="space-y-2">
             <h3 className="text-sm font-semibold text-foreground-muted uppercase tracking-wider">
               Story So Far
             </h3>
-            <div className="glass p-4 space-y-3">
-              {room.memories.map((m, i) => (
-                <div key={i} className="flex items-start gap-2">
-                  <div className="flex flex-col items-center">
-                    <span className="text-lg">{m.winnerAvatar}</span>
-                    {i < room.memories.length - 1 && (
-                      <div className="w-px h-4 bg-gold/20" />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-foreground-muted">
-                      Round {m.round} — <span className="text-gold font-semibold">{m.winnerName}</span>
-                    </p>
-                    <p className="text-sm text-foreground">&ldquo;{m.winningTwist}&rdquo;</p>
+            <div className="space-y-3">
+              {memories.map((m, i) => (
+                <div key={i} className="glass overflow-hidden rounded-xl">
+                  {m.mediaUrl && (
+                    <MediaDisplay url={m.mediaUrl} type={m.mediaType} className="rounded-none" />
+                  )}
+                  <div className="p-3 flex items-start gap-2">
+                    <div className="flex flex-col items-center">
+                      <span className="text-lg">{m.winnerAvatar}</span>
+                      {i < memories.length - 1 && (
+                        <div className="w-px h-4 bg-gold/20" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-foreground-muted">
+                        Round {m.round} — <span className="text-gold font-semibold">{m.winnerName}</span>
+                      </p>
+                      <p className="text-sm text-foreground">&ldquo;{m.winningTwist}&rdquo;</p>
+                    </div>
                   </div>
                 </div>
               ))}

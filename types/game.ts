@@ -56,6 +56,7 @@ export interface Memory {
   winnerAvatar: string;
   narration: string;
   mediaUrl?: string;
+  mediaType?: "video" | "image";
 }
 
 export interface PlayerScore {
